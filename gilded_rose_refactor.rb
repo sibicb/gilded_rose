@@ -18,14 +18,14 @@ class GildedRose
         item.sell_in -= 1
       when "Backstage passes to a TAFKAL80ETC concert"
         quality = if item.sell_in > 10
-          item.quality + 1
-        elsif item.sell_in > 5
-          item.quality + 2
-        elsif item.sell_in > 0
-          item.quality + 3
-        else
-          0
-        end
+                    item.quality + 1
+                  elsif item.sell_in > 5
+                    item.quality + 2
+                  elsif item.sell_in > 0
+                    item.quality + 3
+                  else
+                    0
+                  end
         item.quality = quality if quality <= 50
         item.quality = 50 if quality > 50
         item.sell_in -= 1
@@ -39,9 +39,7 @@ class GildedRose
         else
           quality = item.quality - 2
         end
-
         item.quality = quality if quali ty >= 0
-
         item.sell_in -= 1
       end
     end
