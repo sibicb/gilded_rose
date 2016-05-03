@@ -6,41 +6,31 @@ class GildedRose
   def update_quality()
     @items.each do |item|
       case item.name
-      when "Aged Brie"
-        if item.sell_in > 0
-          quality = item.quality + 1
-        else
-          quality = item.quality + 2
-        end
-        item.quality = quality if quality <= 50
-        item.sell_in -= 1
-      when "Sulfuras, Hand of Ragnaros"
-        item.sell_in -= 1
-      when "Backstage passes to a TAFKAL80ETC concert"
-        quality = if item.sell_in > 10
-                    item.quality + 1
-                  elsif item.sell_in > 5
-                    item.quality + 2
-                  elsif item.sell_in > 0
-                    item.quality + 3
-                  else
-                    0
-                  end
-        item.quality = quality if quality <= 50
-        item.quality = 50 if quality > 50
-        item.sell_in -= 1
-      when "Conjured Mana Cake"
-        quality = item.quality - 2
-        item.quality = quality if quality >= 0
-        item.sell_in -= 1
-      else
-        if item.sell_in > 0
-          quality = item.quality - 1
-        else
-          quality = item.quality - 2
-        end
-        item.quality = quality if quali ty >= 0
-        item.sell_in -= 1
+        when "Aged Brie" 
+          item.quality = 50 if item.quality > 50
+          item.quality += 1 if item.sell_in > 0 
+          item.sell_in -= 1
+
+        #when "Sulfuras, Hand of Ragnaros"
+        when "Sulfuras" 
+          item.quality = 80
+
+        #when "Backstage passes to a TAFKAL80ETC con"
+        when "Backstage passes"
+          item.quality = 50 if item.quality > 50
+          item.quality += 1 if item.sell_in > 10
+          item.quality += 2 if item.sell_in > 5 && item.sell_in < 10
+          item.quality += 3 if item.sell_in <= 5 && item.sell_in > 0
+          item.quality = 0 if item.sell_in == 0
+          item.sell_in -= 1
+
+        #when "Conjured Mana Cake"
+        when "Conjured"
+          item.quality = 50 if item.quality > 50
+          item.quality -= 2 if item.quality >= 0 && item.sell_in >= 0
+          item.quality -= 4 if item.quality >= 0 && item.sell_in < 0
+          item.quality = 0 if item.quality < 0
+          item.sell_in -= 1
       end
     end
   end
