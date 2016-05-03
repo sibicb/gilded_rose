@@ -14,7 +14,7 @@ class GildedRose
         validate_quality(item)
 
       when 'Sulfuras, Hand of Ragnaros'
-        item.quality = 80
+        item.quality = 80 # ensures Sulfuras is on top quality all the time
 
       when 'Backstage passes to a TAFKAL80ETC concert'
         item.quality += 1 if item.sell_in > 10
