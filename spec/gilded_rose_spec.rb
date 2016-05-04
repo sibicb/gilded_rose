@@ -45,15 +45,7 @@ describe GildedRose do
     context 'item quality' do
       context 'when sell in date not passed yet' do
         it 'increases by 1 the older it gets' do
-          x = 5
-          item = Item.new('Aged Brie',sell_in = x, quality = 0)
-          items = [item]
-          gilded_rose = GildedRose.new(items)
-
-          x.times do |i|
-            gilded_rose.update_item
-            expect(item.quality).to eq (i + 1)
-          end
+          expect(quality_helper('Aged Brie', sell_in = 1, quality = 0)).to eq quality + 1
         end
       end
     end
