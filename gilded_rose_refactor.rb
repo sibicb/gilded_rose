@@ -33,7 +33,11 @@ class GildedRose
   end
 
   def update_sell_in(item)
-    item.sell_in -= 1
+    if item.name != 'Sulfuras, Hand of Ragnaros'
+        item.sell_in -= 1
+    else
+        item.sell_in = 0
+    end
   end
 
   def validate_quality(item)

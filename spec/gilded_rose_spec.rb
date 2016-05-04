@@ -28,13 +28,48 @@ end
 describe GildedRose do
   context 'item name' do
     it 'does not change the name' do
-      item = Item.new('foo', sell_in=0, quality=0)
+      item = Item.new('foo', sell_in = 0, quality = 0)
       items = [item]
       gilded_rose = GildedRose.new(items)
       gilded_rose.update
-
-
-      expect(item.name).to eq  "foo"
+      expect(item.name).to eq  'foo'
+    end
+  end
+  context 'when item name is Aged Brie' do
+    context 'item quality' do
+      context 'when sell in date not passed yet' do
+        it 'increases by 1 the older it gets' do
+          x = 5
+          item = Item.new('Aged Brie',sell_in = x, quality = 0)
+          items = [item]
+          gilded_rose = GildedRose.new(items)
+          
+          x.times do |i|
+            gilded_rose.update
+            expect(item.quality).to eq (i + 1)
+          end
+        end
+      end
+    end
+    context 'when item name is Sulfuras, Hand of Ragnaros' do
+      context 'item sell in' do
+        it 'does not change the sell in' do
+          item = Item.new('Sulfuras, Hand of Ragnaros', sell_in = 0, quality = 0)
+          items = [item]
+          gilded_rose = GildedRose.new(items)
+          gilded_rose.update
+          expect(item.sell_in).to eql 0
+        end
+      end
+        context 'item quality' do
+        it 'does not change the quality' do
+          item = Item.new('Sulfuras, Hand of Ragnaros', sell_in = 0, quality = 0)
+          items = [item]
+          gilded_rose = GildedRose.new(items)
+          gilded_rose.update
+          expect(item.quality).to eql 80
+        end
+      end
     end
   end
 end
