@@ -85,6 +85,22 @@ describe GildedRose do
       expect(item.quality).to eq item.quality
     end
   end
+  context 'Conjured' do
+    it 'decreases quality if sell in is more than or equals 0' do
+      item = Item.new('Conjured', sell_in = 5, quality = 40)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      gilded_rose.update
+      expect(item.quality).to eq quality - 2
+    end
+    it 'doubles decrease in quality if sell in is less than 0' do
+      item = Item.new('Conjured', sell_in = -3, quality = 40)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      gilded_rose.update
+      expect(item.quality).to eq quality - 4
+    end
+  end
   context 'Everything Else' do
     it 'decreases quality if sell_in >= 0' do
       item = Item.new('Lame Item', sell_in = 5, quality = 40)
@@ -99,6 +115,31 @@ describe GildedRose do
       gilded_rose = GildedRose.new(item_to_update)
       gilded_rose.update
       expect(item.quality).to eq quality - 2
+    end
+  end
+end
+describe ".validate_quality" do
+  context 'Item Quality' do
+    it 'maxes out at 50' do
+      item = Item.new('Aged Brie', sell_in = 8, quality = 46)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      5.times { gilded_rose.update }
+      expect(item.quality).to eq 50
+    end
+    it 'stops decreasing in quality if 0' do
+      item = Item.new('Conjured', sell_in = 8, quality = 8)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      5.times { gilded_rose.update }
+      expect(item.quality).to eq 0
+    end
+    it 'does not affect if item is sulfuras' do
+      item = Item.new('Sulfuras, Hand of Ragnaros', sell_in = 5, quality = 40)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      5.times { gilded_rose.update }
+      expect(item.quality).to eq 80
     end
   end
 end
