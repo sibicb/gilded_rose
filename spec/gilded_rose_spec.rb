@@ -88,29 +88,29 @@ describe GildedRose do
     end
   end
 
-  context 'Backstage Category' do
-    it 'quality increases by 1 if sell_in > 10 days' do
+  context 'when item name is Backstage passes to a TAFKAL80ETC concert' do
+    it 'quality increases by 1 if sell_in is above 10 days' do
       item = Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in = 25, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
       gilded_rose.update
       expect(item.quality).to eq quality + 1
     end
-    it 'increases by 2 if sell_in <= 10 days' do
+    it 'increases by 2 if sell_in is below 10 days' do
       item = Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in = 9, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
       gilded_rose.update
       expect(item.quality).to eq quality + 2
     end
-    it 'increases by 3 if sell_in <= 5 days' do
+    it 'increases by 3 if sell_in at least 5 days' do
       item = Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in = 4, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
       gilded_rose.update
       expect(item.quality).to eq quality + 3
     end
-    it 'turns 0 if sell_in == 0' do
+    it 'turns 0 if sell_in is 0' do
       item = Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in = 0, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
