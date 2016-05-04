@@ -33,7 +33,7 @@ describe GildedRose do
       item = Item.new('foo', sell_in = 0, quality = 0)
       items = [item]
       gilded_rose = GildedRose.new(items)
-      gilded_rose.update
+      gilded_rose.update_item
 
       expect(item.name).to eq  'foo'
     end
@@ -43,7 +43,7 @@ describe GildedRose do
       item = Item.new('Aged Brie', sell_in = 20, quality = 45)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
-      gilded_rose.update
+      gilded_rose.update_item
       expect(item.sell_in).to eq sell_in - 1
     end
   end
@@ -58,7 +58,7 @@ describe GildedRose do
           gilded_rose = GildedRose.new(items)
           
           x.times do |i|
-            gilded_rose.update
+            gilded_rose.update_item
             expect(item.quality).to eq (i + 1)
           end
         end
@@ -72,7 +72,7 @@ describe GildedRose do
         item = Item.new('Sulfuras, Hand of Ragnaros', sell_in = 0, quality = 0)
         items = [item]
         gilded_rose = GildedRose.new(items)
-        gilded_rose.update
+        gilded_rose.update_item
         expect(item.sell_in).to eql 0
       end
     end
@@ -82,7 +82,7 @@ describe GildedRose do
         item = Item.new('Sulfuras, Hand of Ragnaros', sell_in = 0, quality = 0)
         items = [item]
         gilded_rose = GildedRose.new(items)
-        gilded_rose.update
+        gilded_rose.update_item
         expect(item.quality).to eql 80
       end
     end
@@ -93,29 +93,46 @@ describe GildedRose do
       item = Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in = 25, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
-      gilded_rose.update
+      gilded_rose.update_item
       expect(item.quality).to eq quality + 1
     end
     it 'increases by 2 if sell_in is below 10 days' do
       item = Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in = 9, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
-      gilded_rose.update
+      gilded_rose.update_item
       expect(item.quality).to eq quality + 2
     end
     it 'increases by 3 if sell_in at least 5 days' do
       item = Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in = 4, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
-      gilded_rose.update
+      gilded_rose.update_item
       expect(item.quality).to eq quality + 3
     end
     it 'turns 0 if sell_in is 0' do
       item = Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in = 0, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
-      gilded_rose.update
+      gilded_rose.update_item
       expect(item.quality).to eq 0
+    end
+  end
+
+  context 'when item name is Conjured' do
+    it 'decreases quality if sell in is more than or equals 0' do
+      item = Item.new('Conjured', sell_in = 5, quality = 40)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      gilded_rose.update_item
+      expect(item.quality).to eq quality - 2
+    end
+    it 'doubles decrease in quality if sell in is less than 0' do
+      item = Item.new('Conjured', sell_in = -3, quality = 40)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      gilded_rose.update_item
+      expect(item.quality).to eq quality - 4
     end
   end
 
@@ -124,15 +141,40 @@ describe GildedRose do
       item = Item.new('Lame Item', sell_in = 5, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
-      gilded_rose.update
+      gilded_rose.update_item
       expect(item.quality).to eq quality - 1
     end
     it 'doubles decrease in quality if sell_in > 0' do
       item = Item.new('Lame Item', sell_in = -1, quality = 40)
       item_to_update = [item]
       gilded_rose = GildedRose.new(item_to_update)
-      gilded_rose.update
+      gilded_rose.update_item
       expect(item.quality).to eq quality - 2
+    end
+  end
+end
+describe ".validate_quality" do
+  context 'Item Quality' do
+    it 'maxes out at 50' do
+      item = Item.new('Aged Brie', sell_in = 8, quality = 46)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      5.times { gilded_rose.update_item }
+      expect(item.quality).to eq 50
+    end
+    it 'stops decreasing in quality if 0' do
+      item = Item.new('Conjured', sell_in = 8, quality = 8)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      5.times { gilded_rose.update_item }
+      expect(item.quality).to eq 0
+    end
+    it 'does not affect if item is sulfuras' do
+      item = Item.new('Sulfuras, Hand of Ragnaros', sell_in = 5, quality = 40)
+      item_to_update = [item]
+      gilded_rose = GildedRose.new(item_to_update)
+      5.times { gilded_rose.update_item }
+      expect(item.quality).to eq 80
     end
   end
 end

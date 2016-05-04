@@ -4,7 +4,7 @@ class GildedRose
     @items = items
   end
 
-  def update
+  def update_item
     @items.each do |item|
       update_sell_in(item)
       update_quality(item)
