@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../gilded_rose.rb'
+require_relative '../gilded_rose_refactor.rb'
 
 RSpec.configure do |config|
   config.failure_color = :magenta
@@ -8,7 +8,7 @@ RSpec.configure do |config|
 end
 
 describe Item do
-  context 'stores 5 items in the array variable' do
+  context 'stores 5 items in an array variable' do
     let(:list_of_items) { [
         Item.new("Aged Brie", 5, 48),
         Item.new("Sulfuras, Hand of Ragnaros", 5, 80),
@@ -20,7 +20,21 @@ describe Item do
       expect(list_of_items.count).to eq(5)
     end
     it 'is an array object' do
-      expect(list_of_items.kind_of?(Array)).to eq(true)
+      expect(list_of_items.is_a?(Array)).to eq(true)
+    end
+  end
+end
+
+describe GildedRose do
+  context 'stores item list to a variable' do
+    context 'in the case of Aged Brie'
+    let(:list_of_items) { [
+        Item.new("Aged Brie", 5, 48)
+      ] }
+    let(:list) { GildedRose.new(list_of_items) }
+    let(:result) { list.update }
+    it 'must match ' do
+      expect(result).to eq(2)
     end
   end
 end

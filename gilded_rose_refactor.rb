@@ -1,5 +1,5 @@
 class GildedRose
-  attr_accessor :item
+  attr_accessor :items
   def initialize(items)
     @items = items
   end
@@ -44,8 +44,7 @@ class GildedRose
   end
 
   def info(item)
-    puts "Name: #{item.name},
-    Must be sold in: #{item.sell_in} Days, Quality: #{item.quality}"
+    puts "Name: #{item.name}, Must be sold in: #{item.sell_in} Days, Quality: #{item.quality}"
   end
 end
 
