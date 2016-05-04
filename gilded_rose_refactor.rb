@@ -22,12 +22,12 @@ class GildedRose
       item.quality += 1 if item.sell_in > 10
       item.quality += 2 if item.sell_in > 5 && item.sell_in <= 10
       item.quality += 3 if item.sell_in <= 5 && item.sell_in > 0
-      item.quality = 0 if item.sell_in == 0
+      item.quality = 0 if item.sell_in <= 0
     when 'Conjured'
       item.quality -= 2 if item.quality >= 0 && item.sell_in >= 0
       item.quality -= 4 if item.quality >= 0 && item.sell_in < 0
     else
-      item.sell_in > 0 ? (item.quality -= 1) : (item.quality -= 2)
+      item.sell_in >= 0 ? (item.quality -= 1) : (item.quality -= 2)
     end
     validate_quality(item)
   end
