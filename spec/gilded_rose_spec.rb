@@ -26,15 +26,15 @@ describe Item do
 end
 
 describe GildedRose do
-  context 'stores item list to a variable' do
-    context 'in the case of Aged Brie'
-    let(:list_of_items) { [
-        Item.new("Aged Brie", 5, 48)
-      ] }
-    let(:list) { GildedRose.new(list_of_items) }
-    let(:result) { list.update }
-    it 'must match ' do
-      expect(result).to eq(2)
+  context 'item name' do
+    it 'does not change the name' do
+      item = Item.new('foo', sell_in=0, quality=0)
+      items = [item]
+      gilded_rose = GildedRose.new(items)
+      gilded_rose.update
+
+
+      expect(item.name).to eq  "foo"
     end
   end
 end
